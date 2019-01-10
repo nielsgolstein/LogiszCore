@@ -1,0 +1,97 @@
+﻿@model SitefinityWebApp.Logisz.Core.Modules.Debugger.Models.LogiszModuleDebugViewModel
+@using System;
+@using System.Linq;
+@using SitefinityWebApp.Logisz.Modules;
+
+@{
+    OpenGraphModel Data = Model.Data as OpenGraphModel;
+}
+
+<div class="paddingedView">
+    <p class="smallHeading">Debug results of the module @Model.Title</p>
+
+    <!-- Field defination -->
+    <div class="LogiszDebugInfoBlock">
+        <h3>Property definations</h3>
+        <table>
+            <tr class="odd">
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+
+            <!-- PROPERTIES -->
+            <tr class="even">
+                <td>Title</td>
+                <td>@Data.ogTitle</td>
+            </tr>
+
+            <tr class="odd">
+                <td>Url</td>
+                <td>@Data.ogUrl</td>
+            </tr>
+
+            <tr class="even">
+                <td>Description</td>
+                <td>@Data.ogDescription</td>
+            </tr>
+
+            <tr class="odd">
+                <td>Type</td>
+                <td>@Data.ogType</td>
+            </tr>
+
+            <tr class="even">
+                <td>Image url</td>
+                <td>@Data.ogImage</td>
+            </tr>
+
+            <tr class="odd">
+                <td>Locale</td>
+                <td>@Data.ogLocale</td>
+            </tr>
+
+            <tr class="even">
+                <td>Sitename</td>
+                <td>@Data.ogSiteName</td>
+            </tr>
+
+            <tr class="odd">
+                <td>Fb app ID</td>
+                <td>@Data.ogFbAppId</td>
+            </tr>
+
+            <tr class="even">
+                <td>Control types</td>
+                <td>
+                    @foreach (string type in Data.pageControlTypes)
+                    {
+                        <span>@type </span>
+                    }
+                </td>
+            </tr>
+            <!--END PROPERTIES-->
+        </table>
+    </div>
+
+
+    <div class="LogiszDebugInfoBlock">
+        <h3>Opengraph example</h3>
+
+        <div class="opengraphExample">
+            @if(!String.IsNullOrEmpty(Data.ogImage))
+            {
+                <div class="ogimage">
+                    <img width="75px" height="75px" src="@Data.ogImage" />
+                </div>
+            }
+            <div class="og">
+                <h3 class="heading"><a href="@Data.ogUrl">@Data.ogTitle</a></h3>
+                <p class="url">@Data.ogUrl</p>
+                <p class="text">@Data.ogDescription</p>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+

@@ -1,0 +1,97 @@
+﻿@model SitefinityWebApp.Logisz.Core.Modules.Debugger.Models.LogiszModuleDebugViewModel
+@using SitefinityWebApp.Logisz.Modules.Yoast.Models;
+
+@{ 
+    ValidationResult result = Model.Data as ValidationResult;
+    PageValidationResult pageResult = result.pageValidationResult;
+}
+
+@if (pageResult.FatalError)
+{
+    <div class="LogiszDebugFatalError">
+        <p>@pageResult.FatalErrorMessage</p>
+    </div>
+}
+
+<div class="paddingedView">
+    @{ 
+        
+    }
+    <p class="smallHeading">Yoast results</p>
+    <div class="LogiszDebugInfoBlock">
+        <h3>Focus keyword</h3>
+        @{
+        string kW = String.IsNullOrEmpty(pageResult.Keyword) ? "Not set" : pageResult.Keyword;
+        }
+        <p>The focus keyword is <strong>@kW</strong></p>
+
+        <p><strong>Keyword usage</strong><br/>
+        Your focus keyword was found in: </p>
+        <table>
+            <tr class="even">
+                <td>Article heading</td>
+                <td><span class="@pageResult.KeywordIsInArticleHeading.CssClass">@pageResult.KeywordIsInArticleHeading.Message</span></td>
+            </tr>
+            <tr class="odd">
+                <td>Page title</td>
+                <td><span class="@pageResult.KeywordIsInTitle.CssClass">@pageResult.KeywordIsInTitle.Message</span></td>
+            </tr>
+            <tr class="even">
+                <td>Page URL</td>
+                <td><span class="@pageResult.KeywordIsInUrl.CssClass">@pageResult.KeywordIsInUrl.Message</span></td>
+            </tr>
+            <tr class="odd">
+                <td>Content</td>
+                <td><span class="@pageResult.KeywordIsInContent.CssClass">@pageResult.KeywordIsInContent.Message</span></td>
+            </tr>
+            <tr class="even">
+                <td>Meta title</td>
+                <td><span class="@pageResult.KeywordIsInMetaTitle.CssClass">@pageResult.KeywordIsInMetaTitle.Message</span></td>
+            </tr>
+            <tr class="odd">
+                <td>Meta description</td>
+                <td><span class="@pageResult.KeywordIsInMetaDescription.CssClass">@pageResult.KeywordIsInMetaDescription.Message</span></td>
+            </tr>
+        </table>
+        <hr/>
+
+        <p><strong>Keyword length</strong></p>
+        <p><span class="@pageResult.KeywordLengthIsValid.CssClass">@pageResult.KeywordLengthIsValid.Message</span></p>
+    </div>
+
+    <div class="LogiszDebugInfoBlock">
+        <h3>Unallowed meta tags</h3>
+        <p>
+            @foreach(string unallowedMetatag in result.config.UnallowedMetaTagNames.Elements.Select(q => q.Key))
+            {
+                if (unallowedMetatag != result.config.UnallowedMetaTagNames.Elements.Select(q => q.Key).FirstOrDefault())
+                {
+                    <span>, </span>
+                }
+                @unallowedMetatag
+                    
+            }
+        </p>
+    </div>
+
+    <div class="LogiszDebugInfoBlock">
+        <h3>Yoast score</h3>
+        <p>Your yoast score for this page is</p>
+        @{ 
+            string cssClass = "";
+            if(Convert.ToDouble(result.Score) > 7.5)
+            {
+                cssClass = "success";
+            } else if( Convert.ToDouble(result.Score) < 5)
+            {
+                cssClass = "fail";
+            }
+        }
+        <div class="LogiszDebugYoastScore @cssClass">
+            @result.Score.ToString("0.0")
+        </div>
+    </div>
+
+</div>
+
+   
